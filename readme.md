@@ -35,10 +35,10 @@ module.exports.build = task([
 executableSet = set( actions );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actions` | _Array_ | Массив набора действий |
-| `executableSet` | _Array_ | Испольняемый набор функций |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actions` | _Array_ | да | Массив набора действий |
+| `executableSet` | _Array_ |  | Испольняемый набор функций |
 
 
 ### task()
@@ -49,10 +49,10 @@ executableSet = set( actions );
 series = task( actions );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actions` | _Array_ | Массив набора действий |
-| `series` | _function_ | Серия тасков |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actions` | _Array_ | да | Массив набора действий |
+| `series` | _function_ |  | Серия тасков |
 
 
 ### action.custom()
@@ -62,12 +62,12 @@ series = task( actions );
 actionObject = action.custom( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | да | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
 
 
 ### action.copy()
@@ -77,15 +77,15 @@ actionObject = action.custom( options );
 actionObject = action.copy( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.src` | _string\|Array_ | glob выборка файлов для копирования |
-| `options.dest` | _string_ | путь назначения |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
+| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
+| `options.src` | _string\|Array_ | да | glob выборка файлов для копирования |
+| `options.dest` | _string\|Array_ | да | путь назначения |
 
 
 ### action.clean()
@@ -95,13 +95,13 @@ actionObject = action.copy( options );
 actionObject = action.clean( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.src` | _string\|Array_ | glob выборка файлов для удаления |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
+| `options.src` | _string\|Array_ | да | glob выборка файлов для удаления |
 
 
 ### action.minifyimg()
@@ -111,15 +111,15 @@ actionObject = action.clean( options );
 actionObject = action.minifyimg( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.src` | _string\|Array_ | glob выборка файлов для минификации |
-| `options.dest` | _string_ | путь назначения |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
+| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
+| `options.src` | _string\|Array_ | да | glob выборка файлов изображений для минификации |
+| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписанны исходные файлы |
 
 
 ### action.delMarker()
@@ -129,15 +129,15 @@ actionObject = action.minifyimg( options );
 actionObject = action.delMarker( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.opts` | _object_ | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.src` | _string\|Array_ | glob выборка файлов |
-| `options.dest` | _string_ | путь назначения |
-| `options.marker` | _string_ | Имя маркера (допустимы цифры, буквы верхнего регистра и символ подчеркивания) |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
+| `options.src` | _string\|Array_ | да | glob выборка файлов |
+| `options.dest` | _string_ | да | путь назначения |
+| `options.marker` | _string_ | да | Имя маркера (допустимы цифры, буквы верхнего регистра и символ подчеркивания) |
 
 
 ### action.pug()
@@ -147,16 +147,16 @@ actionObject = action.delMarker( options );
 actionObject = action.pug( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.pug` | _object_ | параметры [pug компилятора](https://pugjs.org/api/reference.html) |
-| `options.src` | _string\|Array_ | glob выборка файлов для компиляции |
-| `options.dest` | _string_ | путь назначения |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
+| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
+| `options.pug` | _object_ | нет | параметры [pug компилятора](https://pugjs.org/api/reference.html) |
+| `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
+| `options.dest` | _string_ | да | путь назначения |
 
 
 ### action.sass()
@@ -166,16 +166,16 @@ actionObject = action.pug( options );
 actionObject = action.sass( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.sass` | _object_ | параметры [sass компилятора](https://github.com/sass/node-sass#options) |
-| `options.src` | _string\|Array_ | glob выборка файлов для компиляции |
-| `options.dest` | _string_ | путь назначения |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
+| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
+| `options.sass` | _object_ | нет | параметры [sass компилятора](https://github.com/sass/node-sass#options) |
+| `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
+| `options.dest` | _string_ | да | путь назначения |
 
 
 ### action.transform()
@@ -185,30 +185,30 @@ actionObject = action.sass( options );
 actionObject = action.transform( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.opts` | _object_ | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.src` | _string\|Array_ | glob выборка файлов для обработки |
-| `options.dest` | _string_ | путь назначения |
-| `options.cb` | _function_ | колбек для транформации, получает содержимое файла contents и file, должен возвращать строку |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
+| `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
+| `options.dest` | _string_ | да | путь назначения |
+| `options.cb` | _function_ | да | колбек для транформации, получает содержимое файла contents и file, должен возвращать строку |
 
 
 ### action.json()
-Изменение содержимого json-файла как обьекта
+Изменение содержимого json-файла как объекта
 
 ```js
 actionObject = action.json( options );
 ```
 
-| параметр | тип | описание |
-|:---:|:---:|---|
-| `actionObject` | _object_ | Созданный обьект действия для дальнейшего исполнения |
-| `options` | _object_ | Параметры действия |
-| `options.name` | _string_ | Отображаемое в консоли имя действия при выполнении |
-| `options.opts` | _object_ | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.src` | _string\|Array_ | glob выборка файлов для обработки |
-| `options.dest` | _string_ | путь назначения |
-| `options.cb` | _function_ | колбек для транформации, получает обьект, должен возвращать обьект |
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
+| `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
+| `options.dest` | _string_ | да | путь назначения |
+| `options.cb` | _function_ | да | колбек для транформации, получает объект, должен возвращать объект |

@@ -14,7 +14,7 @@ let action = {};
 
 /**
  * Обертка для быстрого создания своего действия
- * @param {object} [data] - обьект с параметрами
+ * @param {object} [data] - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (длжен быть синхронным)
  */
@@ -32,12 +32,12 @@ action.custom = function ( data ) {
 
 /**
  * Копирование файлов
- * @param {object} data - обьект с параметрами
+ * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
  * @param {object} [data.opts] - gulp.src параметры
- * @param {string|Array} data.src - glob выборка файлов для копирования
- * @param {string} data.dest - путь назначения
+ * @param {string|Array.<string>} data.src - glob выборка файлов для копирования
+ * @param {string|Array.<string>} data.dest - путь назначения
  */
 action.copy = function ( data ) {
 	if ( !data || !data.src || !data.dest ) throw Error( 'Required parameter of action.copy not specified (src, dest)' );
@@ -45,15 +45,16 @@ action.copy = function ( data ) {
 
 	data.execute = function () {
 		if ( data.cb instanceof Function ) data.cb();
+		util.log( 'source:', color.magenta( data.src ) );
 		let pipeline = gulp.src( data.src, data.opts );
 
 		if ( data.dest instanceof Array ) {
 			data.dest.forEach( ( str ) => {
-				util.log( 'Copy:', color.magenta( data.src ), '>>', color.magenta( str ) );
+				util.log( 'destination:', color.magenta( str ) );
 				pipeline = pipeline.pipe( gulp.dest( str ) );
 			});
 		} else {
-			util.log( 'Copy:', color.magenta( data.src ), '>>', color.magenta( data.dest ) );
+			util.log( 'destination:', color.magenta( data.dest ) );
 			pipeline = pipeline.pipe( gulp.dest( data.dest ) );
 		}
 
@@ -66,17 +67,17 @@ action.copy = function ( data ) {
 
 /**
  * Удаление файлов
- * @param {object} data - обьект с параметрами
+ * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
- * @param {string|Array} data.src - glob выборка файлов для удаления
+ * @param {string|Array.<string>} data.src - glob выборка файлов для удаления
  */
 action.clean = function ( data ) {
 	if ( !data || !data.src ) throw Error( 'Required parameter of action.clean not specified (src)' );
 
 	data.execute = function () {
 		if ( data.cb instanceof Function ) data.cb();
-		util.log( 'Clean:', color.magenta( data.src ) );
+		util.log( 'source:', color.magenta( data.src ) );
 		return del( data.src );
 	};
 
@@ -86,27 +87,53 @@ action.clean = function ( data ) {
 
 /**
  * Минификация картинок
- * @param {object} data - обьект с параметрами
+ * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
  * @param {object} [data.opts] - gulp.src параметры
  * @param {string|Array.<string>} data.src - glob выборка файлов для минификации
- * @param {string} data.dest - путь назначения
- * @todo отключаемое кеширование
+ * @param {string} [data.dest] - путь назначения, если не указан то будут перезаписанны исходные файлы
+ * @param {boolean} [data.cache] - использование кеширования при минификации
  */
 action.minifyimg = function ( data ) {
-	if ( !data || !data.src || !data.dest ) throw Error( 'Required parameter of action.minifyimg not specified (src, dest)' );
+	if ( !data || !data.src ) throw Error( 'Required parameter of action.minifyimg not specified (src)' );
 
 	data.execute = function () {
 		if ( data.cb instanceof Function ) data.cb();
-		util.log( 'Minify images:', color.magenta( data.src ), '>>', color.magenta( data.dest ) );
-		return gulp.src( data.src, data.opts )
-			.pipe( cache( imagemin([
+		util.log( 'source:', color.magenta( data.src ) );
+		let pipeline = gulp.src( data.src, data.opts );
+
+		if ( data.cache ) {
+			util.log( color.yellow( 'cache is used!' ) );
+			pipeline = pipeline.pipe( cache( imagemin([
 				imagemin.gifsicle({ interlaced: true }),
 				imagemin.mozjpeg({ progressive: true }),
 				imagemin.optipng({ optimizationLevel: 5 })
-			], { verbose: true }) ) )
-			.pipe( gulp.dest( data.dest ) );
+			], { verbose: true }) ) );
+		} else {
+			pipeline = pipeline.pipe( imagemin([
+				imagemin.gifsicle({ interlaced: true }),
+				imagemin.mozjpeg({ progressive: true }),
+				imagemin.optipng({ optimizationLevel: 5 })
+			], { verbose: true }) );
+		}
+
+		if ( typeof( data.dest ) === 'string' ) {
+			util.log( 'destination:', color.magenta( data.dest ) );
+			pipeline = pipeline.pipe( gulp.dest( data.dest ) );
+		} else if ( data.dest instanceof Array ) {
+			data.dest.forEach( ( str ) => {
+				util.log( 'destination:', color.magenta( str ) );
+				pipeline = pipeline.pipe( gulp.dest( str ) );
+			});
+		} else {
+			util.log( 'overwriting sources' );
+			pipeline = pipeline.pipe( gulp.dest( ( file ) => {
+				return file.base;
+			}));
+		}
+
+		return pipeline;
 	};
 
 	data.execute.displayName = data.name || 'Minify Images';
@@ -115,14 +142,13 @@ action.minifyimg = function ( data ) {
 
 /**
  * Удаление части содержимого по маркерам
- * @param {object} data - обьект с параметрами
+ * @param {object} data - объект с параметрами
  * @param {string} data.src - glob выборка файлов
  * @param {string} data.dest - конечный путь
  * @param {string} data.marker - имя маркера (допустимы цифры, буквы верхнего регистра и символ подчеркивания)
  * @param {object} [data.opts] - gulp.src параметры
  * @param {string} [data.name] - отображаемое имя задачи
- * @return {object} - правило
- *
+ * @todo return
  * @todo если не задан dest, то использовать src
  * @todo парсинг маркера
  * @todo LET- маркер
@@ -150,7 +176,7 @@ action.delMarker = function ( data ) {
 
 /**
  * Компиляция pug файлов
- * @param {object} data - обьект с параметрами
+ * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
  * @param {object} [data.opts] - gulp.src параметры
@@ -175,7 +201,7 @@ action.pug = function ( data ) {
 
 /**
  * Компиляция sass файлов
- * @param {object} data - обьект с параметрами
+ * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
  * @param {object} [data.opts] - gulp.src параметры
@@ -201,12 +227,13 @@ action.sass = function ( data ) {
 
 /**
  * Транформация содержимого файлов из выборки
- * @param {object} data - обьект с параметрами
+ * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {object} [data.opts] - gulp.src параметры
  * @param {string|Array} data.src - glob выборка файлов для обработки
  * @param {string} data.dest - путь назначения
  * @param {function} data.cb - колбек для транформации, получает содержимое файла contents и file, должен возвращать строку
+ * @todo optional & multiple dest
  */
 action.transform = function ( data ) {
 	if ( !data || !data.src || !data.dest || !data.cb ) throw Error( 'Required parameter of action.transform not specified (src, dest, cb)' );
@@ -223,13 +250,14 @@ action.transform = function ( data ) {
 };
 
 /**
- * Изменение содержимого json-файла как обьекта
- * @param {object} data - обьект с параметрами
+ * Изменение содержимого json-файла как объекта
+ * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {object} [data.opts] - gulp.src параметры
  * @param {string|Array} data.src - glob выборка файлов для обработки
  * @param {string} data.dest - путь назначения
- * @param {function} data.cb - колбек для транформации, получает обьект, должен возвращать обьект
+ * @param {function} data.cb - колбек для транформации, получает объект, должен возвращать объект
+ * @todo optional & multiple dest
  */
 action.json = function ( data ) {
 	if ( !data || !data.src || !data.dest || !data.cb ) throw Error( 'Required parameter of action.json not specified (src, dest, cb)' );
