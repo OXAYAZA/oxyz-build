@@ -6,6 +6,7 @@ const
 	pug      = require( 'gulp-pug' ),
 	sass     = require( 'gulp-sass' ),
 	insert   = require( 'gulp-insert' ),
+	cache    = require( 'gulp-cache' ),
 	imagemin = require( 'gulp-imagemin' );
 
 let action = {};
@@ -44,8 +45,19 @@ action.copy = function ( data ) {
 
 	data.execute = function () {
 		if ( data.cb instanceof Function ) data.cb();
-		util.log( 'Copy:', color.magenta( data.src ), '>>', color.magenta( data.dest ) );
-		return gulp.src( data.src, data.opts ).pipe( gulp.dest( data.dest ) );
+		let pipeline = gulp.src( data.src, data.opts );
+
+		if ( data.dest instanceof Array ) {
+			data.dest.forEach( ( str ) => {
+				util.log( 'Copy:', color.magenta( data.src ), '>>', color.magenta( str ) );
+				pipeline = pipeline.pipe( gulp.dest( str ) );
+			});
+		} else {
+			util.log( 'Copy:', color.magenta( data.src ), '>>', color.magenta( data.dest ) );
+			pipeline = pipeline.pipe( gulp.dest( data.dest ) );
+		}
+
+		return pipeline;
 	};
 
 	data.execute.displayName = data.name || 'Copy';
@@ -78,9 +90,9 @@ action.clean = function ( data ) {
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
  * @param {object} [data.opts] - gulp.src параметры
- * @param {string|Array} data.src - glob выборка файлов для минификации
+ * @param {string|Array.<string>} data.src - glob выборка файлов для минификации
  * @param {string} data.dest - путь назначения
- * @todo cache
+ * @todo отключаемое кеширование
  */
 action.minifyimg = function ( data ) {
 	if ( !data || !data.src || !data.dest ) throw Error( 'Required parameter of action.minifyimg not specified (src, dest)' );
@@ -89,11 +101,11 @@ action.minifyimg = function ( data ) {
 		if ( data.cb instanceof Function ) data.cb();
 		util.log( 'Minify images:', color.magenta( data.src ), '>>', color.magenta( data.dest ) );
 		return gulp.src( data.src, data.opts )
-			.pipe( imagemin([
+			.pipe( cache( imagemin([
 				imagemin.gifsicle({ interlaced: true }),
 				imagemin.mozjpeg({ progressive: true }),
 				imagemin.optipng({ optimizationLevel: 5 })
-			], { verbose: true }) )
+			], { verbose: true }) ) )
 			.pipe( gulp.dest( data.dest ) );
 	};
 
@@ -219,7 +231,7 @@ action.transform = function ( data ) {
  * @param {string} data.dest - путь назначения
  * @param {function} data.cb - колбек для транформации, получает обьект, должен возвращать обьект
  */
- action.json = function ( data ) {
+action.json = function ( data ) {
 	if ( !data || !data.src || !data.dest || !data.cb ) throw Error( 'Required parameter of action.json not specified (src, dest, cb)' );
 
 	data.execute = function () {

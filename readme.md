@@ -1,17 +1,17 @@
 
-# Zemez Build
+# Alpha Build
 Надстройка над Gulp для быстрой и простой сборки проекта.
 
 ## Использование
 Простая пошаговая инструкция:
 - Создайте в корневой папке проекта файл _gulpfile.js_.
-- Импортируйте модуль _zemez-build_.
+- Импортируйте модуль _alpha-build_.
 - Экспортируйте результат вызова функции `task` с нужными параметрами.
 - Запустите файл из консоли (`gulp`)
 
 Например:
 ```js
-const { action, task } = require( 'zemez-build' );
+const { action, task } = require( 'alpha-build' );
 
 module.exports.build = task([
 	action.clean({ src: 'dist' }),
@@ -23,7 +23,6 @@ module.exports.build = task([
 	action.minifyimg({ src: [ 'dev/**/*.jpg', 'dev/**/*.png' ], dest: 'dist' }),
 	action.clean({ src: 'tmp' })
 ]);
-
 ```
 
 
