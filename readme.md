@@ -1,17 +1,17 @@
 
-# Alpha Build
+# Oxyz Build
 Надстройка над Gulp для быстрой и простой сборки проекта.
 
 ## Использование
 Простая пошаговая инструкция:
 - Создайте в корневой папке проекта файл _gulpfile.js_.
-- Импортируйте модуль _alpha-build_.
+- Импортируйте модуль _oxyz-build_.
 - Экспортируйте результат вызова функции `task` с нужными параметрами.
 - Запустите файл из консоли (`gulp`)
 
 Например:
 ```js
-const { action, task } = require( 'alpha-build' );
+const { action, task } = require( 'oxyz-build' );
 
 module.exports.build = task([
 	action.clean({ src: 'dist' }),

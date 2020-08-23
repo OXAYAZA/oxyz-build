@@ -1,5 +1,5 @@
 {
-  "name": "alpha-build",
+  "name": "oxyz-build",
   "version": "1.0.0",
   "description": "Gulp wrapper for quick and easy project build",
   "main": "index.js",
@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "oxyz",
+    "build",
     "gulp",
     "pug",
     "sass"
