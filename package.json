@@ -13,6 +13,10 @@
     "pug",
     "sass"
   ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/OXAYAZA/oxyz-build.git"
+  },
   "author": "OXAYAZA",
   "license": "ISC",
   "dependencies": {
