@@ -120,10 +120,11 @@ actionObject = action.minifyimg( options );
 | `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов изображений для минификации |
 | `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписанны исходные файлы |
+| `options.cache` | _boolean_ | нет | использование кеширования при минификации (результат кешируется и используется повторно для экономии времени) |
 
 
 ### action.delMarker()
-Удаление части содержимого фалойв по маркерам
+Удаление части содержимого файлов по маркерам
 
 ```js
 actionObject = action.delMarker( options );
@@ -134,9 +135,10 @@ actionObject = action.delMarker( options );
 | `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
 | `options` | _object_ | да | Параметры действия |
 | `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
 | `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов |
-| `options.dest` | _string_ | да | путь назначения |
+| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписаны исходные файлы |
 | `options.marker` | _string_ | да | Имя маркера (допустимы цифры, буквы верхнего регистра и символ подчеркивания) |
 
 
@@ -156,7 +158,7 @@ actionObject = action.pug( options );
 | `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
 | `options.pug` | _object_ | нет | параметры [pug компилятора](https://pugjs.org/api/reference.html) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
-| `options.dest` | _string_ | да | путь назначения |
+| `options.dest` | _string\|Array_ | да | путь назначения |
 
 
 ### action.sass()
@@ -175,7 +177,7 @@ actionObject = action.sass( options );
 | `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
 | `options.sass` | _object_ | нет | параметры [sass компилятора](https://github.com/sass/node-sass#options) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
-| `options.dest` | _string_ | да | путь назначения |
+| `options.dest` | _string\|Array_ | да | путь назначения |
 
 
 ### action.transform()
@@ -192,7 +194,7 @@ actionObject = action.transform( options );
 | `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
 | `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
-| `options.dest` | _string_ | да | путь назначения |
+| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписаны исходные файлы |
 | `options.cb` | _function_ | да | колбек для транформации, получает содержимое файла contents и file, должен возвращать строку |
 
 
@@ -210,5 +212,5 @@ actionObject = action.json( options );
 | `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
 | `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
-| `options.dest` | _string_ | да | путь назначения |
+| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписаны исходные файлы |
 | `options.cb` | _function_ | да | колбек для транформации, получает объект, должен возвращать объект |
