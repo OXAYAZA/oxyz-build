@@ -159,6 +159,7 @@ actionObject = action.pug( options );
 | `options.pug` | _object_ | нет | параметры [pug компилятора](https://pugjs.org/api/reference.html) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
 | `options.dest` | _string\|Array_ | да | путь назначения |
+| `options.debug` | _boolean_ | нет | показывает компилируемый файл |
 
 
 ### action.sass()
@@ -178,6 +179,7 @@ actionObject = action.sass( options );
 | `options.sass` | _object_ | нет | параметры [sass компилятора](https://github.com/sass/node-sass#options) |
 | `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
 | `options.dest` | _string\|Array_ | да | путь назначения |
+| `options.debug` | _boolean_ | нет | показывает компилируемый файл |
 
 
 ### action.transform()

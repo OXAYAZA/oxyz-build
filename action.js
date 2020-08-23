@@ -203,6 +203,7 @@ action.del = function ( data ) {
  * @param {object} [data.pug] - параметры pug компилятора
  * @param {string|Array.<string>} data.src - glob выборка файлов для компиляции
  * @param {string|Array.<string>} data.dest - путь назначения
+ * @param {boolean} [data.debug] - показывает компилируемый файл
  * @todo data.nobase из tempaw-functions?
  */
 action.pug = function ( data ) {
@@ -212,6 +213,13 @@ action.pug = function ( data ) {
 		if ( data.cb instanceof Function ) data.cb();
 		util.log( 'source:', color.magenta( data.src ) );
 		let pipeline = gulp.src( data.src, data.opts );
+
+		if ( data.debug ) {
+			pipeline = pipeline.pipe( insert.transform( function( contents, file ) {
+				util.log( color.gray( `Compiling: ${file.path}` ) );
+				return contents;
+			}));
+		}
 
 		pipeline = pipeline.pipe( pug( data.pug ) );
 
@@ -241,6 +249,7 @@ action.pug = function ( data ) {
  * @param {object} [data.sass] - параметры sass компилятора
  * @param {string|Array.<string>} data.src - glob выборка файлов для компиляции
  * @param {string|Array.<string>} data.dest - путь назначения
+ * @param {boolean} [data.debug] - показывает компилируемый файл
  * @todo data.nobase из tempaw-functions?
  */
 action.sass = function ( data ) {
@@ -251,6 +260,13 @@ action.sass = function ( data ) {
 
 		util.log( 'source:', color.magenta( data.src ) );
 		let pipeline = gulp.src( data.src, data.opts );
+
+		if ( data.debug ) {
+			pipeline = pipeline.pipe( insert.transform( function( contents, file ) {
+				util.log( color.gray( `Compiling: ${file.path}` ) );
+				return contents;
+			}));
+		}
 
 		pipeline = pipeline.pipe( sass( data.sass ) );
 
