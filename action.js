@@ -3,6 +3,7 @@ const
 	color    = require( 'ansi-colors' ),
 	gulp     = require( 'gulp' ),
 	del      = require( 'del' ),
+	zip      = require( 'gulp-zip' )
 	pug      = require( 'gulp-pug' ),
 	sass     = require( 'gulp-sass' ),
 	insert   = require( 'gulp-insert' ),
@@ -38,6 +39,7 @@ action.custom = function ( data ) {
  * @param {object} [data.opts] - gulp.src параметры
  * @param {string|Array.<string>} data.src - glob выборка файлов для копирования
  * @param {string|Array.<string>} data.dest - путь назначения
+ * @todo {boolean} [data.debug] - показывает копируемый файл
  */
 action.copy = function ( data ) {
 	if ( !data || !data.src || !data.dest ) throw Error( 'Required parameter of action.copy not specified (src, dest)' );
@@ -319,6 +321,8 @@ action.transform = function ( data ) {
 				return file.base;
 			}));
 		}
+
+		return pipeline;
 	};
 
 	data.execute.displayName = data.name || 'Transform';
@@ -335,7 +339,7 @@ action.transform = function ( data ) {
  * @param {function} data.cb - колбек для транформации, получает объект, должен возвращать объект
  */
 action.json = function ( data ) {
-	if ( !data || !data.src || !data.dest || !data.cb ) throw Error( 'Required parameter of action.json not specified (src, dest, cb)' );
+	if ( !data || !data.src || !data.cb ) throw Error( 'Required parameter of action.json not specified (src, cb)' );
 
 	data.execute = function () {
 		util.log( 'source:', color.magenta( data.src ) );
@@ -357,11 +361,54 @@ action.json = function ( data ) {
 				return file.base;
 			}));
 		}
+
+		return pipeline;
 	};
 
 	data.execute.displayName = data.name || 'Json';
 	return data;
 };
 
+/**
+ * Запаковка выборки файлов в zip-архив
+ * @param {object} data - объект с параметрами
+ * @param {string} [data.name] - отображаемое имя действия
+ * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
+ * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.zip] - параметры gulp-zip плагина
+ * @param {string} data.fname - имя архива
+ * @param {string|Array.<string>} data.src - glob выборка файлов для запаковки
+ * @param {string|Array.<string>} [data.dest] - путь назначения, если не указан то архив будет создан в корне проекта
+ */
+action.zip = function ( data ) {
+	if ( !data || !data.src || !data.fname ) throw Error( 'Required parameter of action.zip not specified (src, fname)' );
+
+	data.execute = function () {
+		if ( data.cb instanceof Function ) data.cb();
+
+		util.log( 'source:', color.magenta( data.src ) );
+		let pipeline = gulp.src( data.src, data.opts );
+
+		pipeline = pipeline.pipe( zip( data.fname, data.zip ) );
+
+		if ( typeof( data.dest ) === 'string' ) {
+			util.log( 'destination:', color.magenta( data.dest ) );
+			pipeline = pipeline.pipe( gulp.dest( data.dest ) );
+		} else if ( data.dest instanceof Array ) {
+			data.dest.forEach( ( str ) => {
+				util.log( 'destination:', color.magenta( str ) );
+				pipeline = pipeline.pipe( gulp.dest( str ) );
+			});
+		} else {
+			util.log( 'destination: "./"' );
+			pipeline = pipeline.pipe( gulp.dest( './' ) );
+		}
+
+		return pipeline;
+	};
+
+	data.execute.displayName = data.name || 'Zip';
+	return data;
+}
 
 module.exports = action;
