@@ -216,3 +216,23 @@ actionObject = action.json( options );
 | `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
 | `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписаны исходные файлы |
 | `options.cb` | _function_ | да | колбек для транформации, получает объект, должен возвращать объект |
+
+
+### action.zip()
+Запаковка выборки файлов в zip архив
+
+```js
+actionObject = action.zip( options );
+```
+
+| параметр | тип | обязателен | описание |
+|:---:|:---:|:---:|---|
+| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
+| `options` | _object_ | да | Параметры действия |
+| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
+| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
+| `options.opts` | _object_ | нет | параметры [gulp.src](https://gulpjs.com/docs/en/api/src) |
+| `options.zip` | _object_ | нет | параметры [gulp-zip](https://www.npmjs.com/package/gulp-zip#api) |
+| `options.fname` | _string_ | да | имя zip архива |
+| `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
+| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то архив будет создан в корне проекта |
