@@ -3,40 +3,24 @@ const
 	color    = require( 'ansi-colors' ),
 	gulp     = require( 'gulp' ),
 	del      = require( 'del' ),
-	zip      = require( 'gulp-zip' )
+	zip      = require( 'gulp-zip' ),
 	pug      = require( 'gulp-pug' ),
 	sass     = require( 'gulp-sass' ),
 	insert   = require( 'gulp-insert' ),
 	cache    = require( 'gulp-cache' ),
+	rename   = require( 'gulp-rename' ),
 	imagemin = require( 'gulp-imagemin' );
 
 let action = {};
 
 
 /**
- * Обертка для быстрого создания своего действия
- * @param {object} [data] - объект с параметрами
- * @param {string} [data.name] - отображаемое имя действия
- * @param {function} [data.cb] - выполняемый колбек (длжен быть синхронным)
- */
-action.custom = function ( data ) {
-	if ( !data ) data = {};
-
-	data.execute = function ( end ) {
-		if ( data.cb instanceof Function ) data.cb();
-		end();
-	};
-
-	data.execute.displayName = data.name || 'custom';
-	return data;
-};
-
-/**
  * Копирование файлов
  * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
- * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.opts] - параметры gulp.src
+ * @param {string|object|function} [data.fname] - параметры gulp-rename
  * @param {string|Array.<string>} data.src - glob выборка файлов для копирования
  * @param {string|Array.<string>} data.dest - путь назначения
  * @todo {boolean} [data.debug] - показывает копируемый файл
@@ -49,6 +33,10 @@ action.copy = function ( data ) {
 		if ( data.cb instanceof Function ) data.cb();
 		util.log( 'source:', color.magenta( data.src ) );
 		let pipeline = gulp.src( data.src, data.opts );
+
+		if ( data.fname ) {
+			pipeline = pipeline.pipe( rename( data.fname ) );
+		}
 
 		if ( data.dest instanceof Array ) {
 			data.dest.forEach( ( str ) => {
@@ -92,7 +80,8 @@ action.clean = function ( data ) {
  * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
- * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.opts] - параметры gulp.src
+ * @param {string|object|function} [data.fname] - параметры gulp-rename
  * @param {string|Array.<string>} data.src - glob выборка файлов для минификации
  * @param {string} [data.dest] - путь назначения, если не указан то будут перезаписаны исходные файлы
  * @param {boolean} [data.cache] - использование кеширования при минификации
@@ -118,6 +107,10 @@ action.minifyimg = function ( data ) {
 				imagemin.mozjpeg({ progressive: true }),
 				imagemin.optipng({ optimizationLevel: 5 })
 			], { verbose: true }) );
+		}
+
+		if ( data.fname ) {
+			pipeline = pipeline.pipe( rename( data.fname ) );
 		}
 
 		if ( typeof( data.dest ) === 'string' ) {
@@ -147,7 +140,8 @@ action.minifyimg = function ( data ) {
  * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя задачи
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
- * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.opts] - параметры gulp.src
+ * @param {string|object|function} [data.fname] - параметры gulp-rename
  * @param {string|Array.<string>} data.src - glob выборка файлов
  * @param {string|Array.<string>} [data.dest] - путь назначения, если не указан то будут перезаписаны исходные файлы
  * @param {string} data.marker - имя маркера (допустимы цифры, буквы верхнего регистра и символ подчеркивания)
@@ -173,6 +167,10 @@ action.del = function ( data ) {
 				return '';
 			}).replace( /\s*\/\/\{DEL.*?\}/g, '' );
 		}));
+
+		if ( data.fname ) {
+			pipeline = pipeline.pipe( rename( data.fname ) );
+		}
 
 		if ( typeof( data.dest ) === 'string' ) {
 			util.log( 'destination:', color.magenta( data.dest ) );
@@ -201,7 +199,8 @@ action.del = function ( data ) {
  * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
- * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.opts] - параметры gulp.src
+ * @param {string|object|function} [data.fname] - параметры gulp-rename
  * @param {object} [data.pug] - параметры pug компилятора
  * @param {string|Array.<string>} data.src - glob выборка файлов для компиляции
  * @param {string|Array.<string>} data.dest - путь назначения
@@ -225,6 +224,10 @@ action.pug = function ( data ) {
 
 		pipeline = pipeline.pipe( pug( data.pug ) );
 
+		if ( data.fname ) {
+			pipeline = pipeline.pipe( rename( data.fname ) );
+		}
+
 		if ( data.dest instanceof Array ) {
 			data.dest.forEach( ( str ) => {
 				util.log( 'destination:', color.magenta( str ) );
@@ -247,7 +250,8 @@ action.pug = function ( data ) {
  * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
  * @param {function} [data.cb] - выполняемый колбек (должен быть синхронным)
- * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.opts] - параметры gulp.src
+ * @param {string|object|function} [data.fname] - параметры gulp-rename
  * @param {object} [data.sass] - параметры sass компилятора
  * @param {string|Array.<string>} data.src - glob выборка файлов для компиляции
  * @param {string|Array.<string>} data.dest - путь назначения
@@ -272,6 +276,10 @@ action.sass = function ( data ) {
 
 		pipeline = pipeline.pipe( sass( data.sass ) );
 
+		if ( data.fname ) {
+			pipeline = pipeline.pipe( rename( data.fname ) );
+		}
+
 		if ( data.dest instanceof Array ) {
 			data.dest.forEach( ( str ) => {
 				util.log( 'destination:', color.magenta( str ) );
@@ -293,7 +301,8 @@ action.sass = function ( data ) {
  * Трансформация содержимого файлов из выборки
  * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
- * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.opts] - параметры gulp.src
+ * @param {string|object|function} [data.fname] - параметры gulp-rename
  * @param {string|Array.<string>} data.src - glob выборка файлов для обработки
  * @param {string|Array.<string>} [data.dest] - путь назначения, если не указан то будут перезаписаны исходные файлы
  * @param {function} data.cb - колбек для транформации, получает содержимое файла contents и file, должен возвращать строку
@@ -305,7 +314,11 @@ action.transform = function ( data ) {
 		util.log( 'source:', color.magenta( data.src ) );
 		let pipeline = gulp.src( data.src, data.opts );
 
-		pipeline = pipeline.pipe( insert.transform( function( contents, file ) { return data.cb( contents, file ); }))
+		pipeline = pipeline.pipe( insert.transform( function( contents, file ) { return data.cb( contents, file ); }));
+
+		if ( data.fname ) {
+			pipeline = pipeline.pipe( rename( data.fname ) );
+		}
 
 		if ( typeof( data.dest ) === 'string' ) {
 			util.log( 'destination:', color.magenta( data.dest ) );
@@ -333,7 +346,8 @@ action.transform = function ( data ) {
  * Изменение содержимого json-файла как объекта
  * @param {object} data - объект с параметрами
  * @param {string} [data.name] - отображаемое имя действия
- * @param {object} [data.opts] - gulp.src параметры
+ * @param {object} [data.opts] - параметры gulp.src
+ * @param {string|object|function} [data.fname] - параметры gulp-rename
  * @param {string|Array.<string>} data.src - glob выборка файлов для обработки
  * @param {string|Array.<string>} [data.dest] - путь назначения, если не указан то будут перезаписаны исходные файлы
  * @param {function} data.cb - колбек для транформации, получает объект, должен возвращать объект
@@ -345,7 +359,11 @@ action.json = function ( data ) {
 		util.log( 'source:', color.magenta( data.src ) );
 		let pipeline = gulp.src( data.src, data.opts );
 
-		pipeline = pipeline.pipe( insert.transform( function( contents, file ) { return JSON.stringify( data.cb( JSON.parse( contents ) ) ); }))
+		pipeline = pipeline.pipe( insert.transform( function( contents, file ) { return JSON.stringify( data.cb( JSON.parse( contents ) ) ); }));
+
+		if ( data.fname ) {
+			pipeline = pipeline.pipe( rename( data.fname ) );
+		}
 
 		if ( typeof( data.dest ) === 'string' ) {
 			util.log( 'destination:', color.magenta( data.dest ) );
@@ -410,5 +428,6 @@ action.zip = function ( data ) {
 	data.execute.displayName = data.name || 'Zip';
 	return data;
 }
+
 
 module.exports = action;

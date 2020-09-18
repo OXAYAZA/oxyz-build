@@ -4,10 +4,10 @@ const
 	action = require( './action.js' );
 
 /**
- * Создание массива функций из массива обьектов действий.
- * Результат в дальнейшем передаетсся в gulp.series или gulp.parallel.
- * @param {Array} setArr - массив обьектов действий
- * @return {Array} - массив вункций
+ * Создание массива функций из массива объектов действий.
+ * Результат в дальнейшем передается в gulp.series или gulp.parallel.
+ * @param {Array} setArr - массив объектов действий
+ * @return {Array} - массив функций
  */
 function set ( setArr ) {
 	let execution = [];
@@ -24,10 +24,10 @@ function set ( setArr ) {
 }
 
 /**
- * Создание gulp-таска из массива обьектов действий.
+ * Создание gulp-таска из массива объектов действий.
  * Должен быть экспортирован в gulpfile.js или передан в другой таск.
  * Является оберткой над gulp.series.
- * @param {Array} setArr - массива обьектов действий
+ * @param {Array} setArr - массива объектов действий
  * @return {function} - функция возвращаемая gulp.series
  */
 function task ( setArr ) {
