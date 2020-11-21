@@ -1,6 +1,6 @@
 {
   "name": "oxyz-build",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Gulp wrapper for quick and easy project build",
   "main": "index.js",
   "scripts": {

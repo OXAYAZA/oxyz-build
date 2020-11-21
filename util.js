@@ -20,7 +20,7 @@ function tag ( data ) {
  */
 function merge( source, merged ) {
 	for ( let key in merged ) {
-		if ( objectTag( merged[ key ] ) === 'Object' ) {
+		if ( tag( merged[ key ] ) === 'Object' ) {
 			if ( typeof( source[ key ] ) !== 'object' ) source[ key ] = {};
 			source[ key ] = merge( source[ key ], merged[ key ] );
 		} else {
