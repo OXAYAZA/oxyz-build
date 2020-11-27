@@ -1,15 +1,15 @@
 
 # Oxyz Build
-Простая надстройка над Gulp для простой сборки проекта.
+Simple Gulp add-on for easy project building.
 
-## Использование
-Простая пошаговая инструкция:
-- Создайте в корневой папке проекта файл _gulpfile.js_.
-- Импортируйте модуль _oxyz-build_.
-- Экспортируйте результат вызова функции `task` с нужными параметрами.
-- Запустите файл из консоли (`gulp`)
+## Usage
+Simple step-by-step guide:
+- Create the _gulpfile.js_ file in the project’s root directory.
+- Import the _oxyz-build_ module.
+- Export the result of calling the `task` function with necessary parameters.
+- Run the file via the console (`gulp`)
 
-Например:
+For example:
 ```js
 const { action, task } = require( 'oxyz-build' );
 
@@ -29,211 +29,211 @@ module.exports.build = task([
 ## API
 
 ### set()
-Создает из последовательности действий массив выполняемых функций для дальнейшей передачи в [gulp.series](https://gulpjs.com/docs/en/api/series) или [gulp.parallel](https://gulpjs.com/docs/en/api/parallel).
+Creates an array of executable functions out of the action sequence for further transfer to [gulp.series](https://gulpjs.com/docs/en/api/series) or [gulp.parallel](https://gulpjs.com/docs/en/api/parallel).
 
 ```js
 executableSet = set( actions );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actions` | _Array_ | да | Массив набора действий |
-| `executableSet` | _Array_ |  | Испольняемый набор функций |
+| `actions` | _Array_ | yes | An array of the action set |
+| `executableSet` | _Array_ |  | Executable set of functions |
 
 
 ### task()
-Создает из последовательности действий gulp-таск.
-В дальнейшем может быть вставлен в другой таск или экспортирован.
+Creates a gulp-task out of the action sequence.
+Afterward, it can be inserted into another task or exported.
 
 ```js
 series = task( actions );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actions` | _Array_ | да | Массив набора действий |
-| `series` | _function_ |  | Серия тасков |
+| `actions` | _Array_ | yes | An array of the action set |
+| `series` | _function_ |  | Task series |
 
 
 ### action.copy()
-Копирование файлов
+File copying.
 
 ```js
 actionObject = action.copy( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.fname` | _string\|object\|function_ | нет | параметры [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) |
-| `options.src` | _string\|Array_ | да | glob выборка файлов для копирования |
-| `options.dest` | _string\|Array_ | да | путь назначения |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.cb` | _function_ | no | Executable callback (must be synchronous), does not accept parameters |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.fname` | _string\|object\|function_ | no | [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) parameters |
+| `options.src` | _string\|Array_ | yes | glob file selection for copying |
+| `options.dest` | _string\|Array_ | yes | destination path |
 
 
 ### action.clean()
-Удаление файлов
+File deletion.
 
 ```js
 actionObject = action.clean( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.src` | _string\|Array_ | да | glob выборка файлов для удаления |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.cb` | _function_ | no | Executable callback (must be synchronous), does not accept parameters |
+| `options.src` | _string\|Array_ | yes | glob file selection for deletion |
 
 
 ### action.minifyimg()
-Минификация картинок
+Image minifying.
 
 ```js
 actionObject = action.minifyimg( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.fname` | _string\|object\|function_ | нет | параметры [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) |
-| `options.src` | _string\|Array_ | да | glob выборка файлов изображений для минификации |
-| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписанны исходные файлы |
-| `options.cache` | _boolean_ | нет | использование кеширования при минификации (результат кешируется и используется повторно для экономии времени) |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.cb` | _function_ | no | Executable callback (must be synchronous), does not accept parameters |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.fname` | _string\|object\|function_ | no | [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) parameters |
+| `options.src` | _string\|Array_ | yes | glob image file selection for minifying |
+| `options.dest` | _string\|Array_ | no | Destination path (if not specified, source files will be overwritten) |
+| `options.cache` | _boolean_ | no | Using cache during minifying (the result is cached and used repeatedly to save time) |
 
 
 ### action.del()
-Удаление части содержимого файлов по маркерам
+Deleting a part of the file using markers.
 
 ```js
 actionObject = action.del( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.fname` | _string\|object\|function_ | нет | параметры [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) |
-| `options.src` | _string\|Array_ | да | glob выборка файлов |
-| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписаны исходные файлы |
-| `options.marker` | _string_ | да | Имя маркера (допустимы цифры, буквы верхнего регистра и символ подчеркивания) |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.cb` | _function_ | no | Executable callback (must be synchronous), does not accept parameters |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.fname` | _string\|object\|function_ | no | [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) parameters |
+| `options.src` | _string\|Array_ | yes | glob file selection |
+| `options.dest` | _string\|Array_ | no | Destination path (if not specified, source files will be overwritten) |
+| `options.marker` | _string_ | yes | Marker name (digits, letters, uppercase, and underscore are acceptable) |
 
 
 ### action.pug()
-Компиляция pug файлов
+Compiling Pug files.
 
 ```js
 actionObject = action.pug( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.fname` | _string\|object\|function_ | нет | параметры [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) |
-| `options.pug` | _object_ | нет | параметры [pug компилятора](https://pugjs.org/api/reference.html) |
-| `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
-| `options.dest` | _string\|Array_ | да | путь назначения |
-| `options.debug` | _boolean_ | нет | показывает компилируемый файл |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.cb` | _function_ | no | Executable callback (must be synchronous), does not accept parameters |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.fname` | _string\|object\|function_ | no | [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) parameters |
+| `options.pug` | _object_ | no | [pug](https://pugjs.org/api/reference.html) compiler parameters |
+| `options.src` | _string\|Array_ | yes | glob file selection for compiling |
+| `options.dest` | _string\|Array_ | yes | Destination path |
+| `options.debug` | _boolean_ | no | Shows the compiled file in the console |
 
 
 ### action.sass()
-Компиляция sass файлов
+Compiling Sass files.
 
 ```js
 actionObject = action.sass( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.fname` | _string\|object\|function_ | нет | параметры [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) |
-| `options.sass` | _object_ | нет | параметры [sass компилятора](https://github.com/sass/node-sass#options) |
-| `options.src` | _string\|Array_ | да | glob выборка файлов для компиляции |
-| `options.dest` | _string\|Array_ | да | путь назначения |
-| `options.debug` | _boolean_ | нет | показывает компилируемый файл |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.cb` | _function_ | no | Executable callback (must be synchronous), does not accept parameters |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.fname` | _string\|object\|function_ | no | [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) parameters |
+| `options.sass` | _object_ | no | [sass](https://github.com/sass/node-sass#options) compiler parameters |
+| `options.src` | _string\|Array_ | yes | glob file selection for compiling |
+| `options.dest` | _string\|Array_ | yes | Destination path |
+| `options.debug` | _boolean_ | no | Shows the compiled file in the console |
 
 
 ### action.transform()
-Транформация содержимого файлов из выборки
+Transforming the file selection content.
 
 ```js
 actionObject = action.transform( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.fname` | _string\|object\|function_ | нет | параметры [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) |
-| `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
-| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписаны исходные файлы |
-| `options.cb` | _function_ | да | колбек для транформации, получает содержимое файла contents и file, должен возвращать строку |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.fname` | _string\|object\|function_ | no | [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) parameters |
+| `options.src` | _string\|Array_ | yes | glob file selection for processing |
+| `options.dest` | _string\|Array_ | no | Destination path (if not specified, source files will be overwritten) |
+| `options.cb` | _function_ | yes | Transformation callback, gets the file content (`contents` & `file`), must return a string |
 
 
 ### action.json()
-Изменение содержимого json-файла как объекта
+Modifying the content of a JSON-file as an object.
 
 ```js
 actionObject = action.json( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.opts` | _object_ | нет | [gulp.src параметры](https://gulpjs.com/docs/en/api/src) |
-| `options.fname` | _string\|object\|function_ | нет | параметры [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) |
-| `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
-| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то будут перезаписаны исходные файлы |
-| `options.cb` | _function_ | да | колбек для транформации, получает объект, должен возвращать объект |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.fname` | _string\|object\|function_ | no | [gulp-rename](https://www.npmjs.com/package/gulp-rename#usage) parameters |
+| `options.src` | _string\|Array_ | yes | glob file selection for processing |
+| `options.dest` | _string\|Array_ | no | Destination path (if not specified, source files will be overwritten) |
+| `options.cb` | _function_ | yes | Transformation callback, gets an object, must return an object |
 
 
 ### action.zip()
-Запаковка выборки файлов в zip архив
+Packing the file selection into a zip archive.
 
 ```js
 actionObject = action.zip( options );
 ```
 
-| параметр | тип | обязателен | описание |
+| parameter | type | required | description |
 |:---:|:---:|:---:|---|
-| `actionObject` | _object_ |  | Созданный объект действия для дальнейшего исполнения |
-| `options` | _object_ | да | Параметры действия |
-| `options.name` | _string_ | нет | Отображаемое в консоли имя действия при выполнении |
-| `options.cb` | _function_ | нет | Выполняемый колбек (длжен быть синхронным), не принимает параметров |
-| `options.opts` | _object_ | нет | параметры [gulp.src](https://gulpjs.com/docs/en/api/src) |
-| `options.zip` | _object_ | нет | параметры [gulp-zip](https://www.npmjs.com/package/gulp-zip#api) |
-| `options.fname` | _string_ | да | имя zip архива |
-| `options.src` | _string\|Array_ | да | glob выборка файлов для обработки |
-| `options.dest` | _string\|Array_ | нет | путь назначения, если не указан то архив будет создан в корне проекта |
+| `actionObject` | _object_ |  | Created action object for further execution |
+| `options` | _object_ | yes | Action parameters |
+| `options.name` | _string_ | no | Name of the action displayed in the console during execution |
+| `options.cb` | _function_ | no | Executable callback (must be synchronous), does not accept parameters |
+| `options.opts` | _object_ | no | [gulp.src](https://gulpjs.com/docs/en/api/src) parameters |
+| `options.zip` | _object_ | no | [gulp-zip](https://www.npmjs.com/package/gulp-zip#api) parameters |
+| `options.fname` | _string_ | yes | Name of the zip archive |
+| `options.src` | _string\|Array_ | yes | glob file selection for processing |
+| `options.dest` | _string\|Array_ | no | Destination path, if not specified, then the archive will be created in the project’s root folder |
 
 
-## Пользовательское действие
-Условное действие является функцией gulp задачи или простым объектом с параметром `execute` который тоже представляет собой [gulp задачу](https://gulpjs.com/docs/en/getting-started/creating-tasks).
+## Custom action
+A conditional action is a function of a gulp task or a simple object with the `execute` parameter that represents a [gulp task](https://gulpjs.com/docs/en/getting-started/creating-tasks), too.
 
-Примеры:
+Examples:
 ```js
 let action = function ( end ) {
   console.log( 'Hello world' );
@@ -255,33 +255,33 @@ let actionObject = {
 };
 ```
 
-Для сокращения типичных действий используется функция возвращающая объект действия, например:
+To shorten the routine actions, a function that returns an action object can be used, for example:
 ```js
 /**
- * Копирование файлов
- * @param {object} data - объект с параметрами
- * @param {string|Array.<string>} data.src - glob выборка файлов для копирования
- * @param {string} data.dest - путь назначения
+ * File copying
+ * @param {object} data - object with parameters
+ * @param {string|Array.<string>} data.src - glob file selection for copying
+ * @param {string} data.dest - destination path
  * @return {object}
  */
 let myCopy = function ( obj ) {
-  // Проверка наличия обязательных параметров
+  // Checking for required parameters
   if ( !obj || !obj.src || !obj.dest ) throw Error( 'Required parameter of myCopy not specified (src, dest)' );
 
-  // Gulp задача копирования файлов с принимаемыми параметрами obj.src и obj.dest
+  // Gulp task for file copying with the received parameters obj.src and obj.dest
   obj.execute = function () {
     return src( obj.src ).pipe( dest( obj.dest ) );
   }
 
-  // Изменение имени задачи
+  // Changing the task name
   obj.execute.displayName = 'My Simple Copy';
 
-  // Возвращение объекта действия
+  // Returning the action object
   return obj;
 };
 ```
 
-Теперь можно использовать новое действие:
+Now, a new action can be used:
 ```js
 const { action, task } = require( 'oxyz-build' );
 
