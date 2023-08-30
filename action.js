@@ -5,7 +5,7 @@ const
 	del      = require( 'del' ),
 	zip      = require( 'gulp-zip' ),
 	pug      = require( 'gulp-pug' ),
-	sass     = require( 'gulp-sass' ),
+	sass     = require( 'gulp-sass' )( require( 'sass' ) ),
 	insert   = require( 'gulp-insert' ),
 	cache    = require( 'gulp-cache' ),
 	rename   = require( 'gulp-rename' ),
